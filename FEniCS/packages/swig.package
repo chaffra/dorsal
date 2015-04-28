@@ -1,8 +1,8 @@
-NAME=swig-2.0.3
+NAME=swig-3.0.5
 SOURCE=http://downloads.sourceforge.net/swig/
 PACKING=.tar.gz
 BUILDCHAIN=autotools
-CHECKSUM=e548ea3882b994c4907d6be86bef90f2
+CHECKSUM=dcb9638324461b9baba8e044fe59031d
 
 package_specific_setup () {
     if [ ! -z ${SWIG_CC} ]; then

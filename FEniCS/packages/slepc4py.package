@@ -1,0 +1,5 @@
+NAME=slepc4py-3.5.1
+SOURCE=https://bitbucket.org/slepc/slepc4py/downloads/
+PACKING=.tar.gz
+CHECKSUM=e5cc2b5e9a9037e5629cfa29cab13003
+BUILDCHAIN=python
