@@ -1,6 +1,6 @@
-VERSION=2.6.2
+VERSION=2.9.2
 NAME=libxml2-${VERSION}
-SOURCE=ftp://xmlsoft.org/libxml2/old/
+SOURCE=ftp://xmlsoft.org/libxml2/
 PACKING=.tar.gz
 BUILDCHAIN=custom
 

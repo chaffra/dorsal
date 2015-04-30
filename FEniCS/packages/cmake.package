@@ -1,8 +1,8 @@
-NAME=cmake-2.8.5
-SOURCE=http://www.cmake.org/files/v2.8/
+NAME=cmake-3.2.2
+SOURCE=http://www.cmake.org/files/v3.2/
 PACKING=.tar.gz
 BUILDCHAIN=autotools
-CHECKSUM=3c5d32cec0f4c2dc45f4c2e84f4a20c5
+#CHECKSUM=3c5d32cec0f4c2dc45f4c2e84f4a20c5
 
 package_specific_setup () {
     rm -f Source/cmConfigure.h

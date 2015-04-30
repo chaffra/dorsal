@@ -4,7 +4,7 @@ PACKING=.tar.gz
 BUILDCHAIN=custom
 
 package_specific_build () {
-    sed -i 's/^CFLAGS=-Wall/CFLAGS=-fPIC -Wall/g' Makefile
+#    sed -i 's/^CFLAGS=-Wall/CFLAGS=-fPIC -Wall/g' Makefile
     make
     make install PREFIX=${INSTALL_PATH}
 }

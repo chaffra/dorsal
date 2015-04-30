@@ -243,8 +243,10 @@ package_build() {
 	echo "#!/usr/bin/env bash" >${cmd_file}
 	chmod a+x ${cmd_file}
 
-        # Write variables to files so that they can be run stand-alone
+    # Write variables to files so that they can be run stand-alone
 	declare -x >>${cmd_file}
+	sed -i'' s/"CommonProgramFiles(x86)"/"CommonProgramFiles_x86"/g ${cmd_file}
+	sed -i'' s/"ProgramFiles(x86)"/"ProgramFiles_x86"/g ${cmd_file}
 
         # From this point in dorsal_*, errors are fatal
 	echo "set -e" >>${cmd_file}
@@ -275,7 +277,7 @@ package_build() {
         echo mkdir -p ${BUILD_DIR} >>dorsal_configure
         echo cd ${BUILD_DIR} >>dorsal_configure
         echo rm -f CMakeCache.txt >>dorsal_configure
-        echo cmake ${CONFOPTS} -D CMAKE_INSTALL_PREFIX:PATH=${INSTALL_PATH} ../ >>dorsal_configure
+        echo cmake -G "${CMAKE_GENERATOR}" ${CONFOPTS} -D CMAKE_INSTALL_PREFIX:PATH=${INSTALL_PATH} ../ >>dorsal_configure
         for target in "${TARGETS[@]}"
         do
             echo make -C ${BUILD_DIR} ${MAKEOPTS} -j ${PROCS} $target >>dorsal_build
@@ -521,8 +523,8 @@ then
     # e.g. apt-get commands is easy.
     awk '/^##/ {exit} {$1=""; print}' <${PLATFORM}
     echo
-    echo "Downloading files to:   $(prettify_dir ${DOWNLOAD_PATH})"
-    echo "Installing projects in: $(prettify_dir ${INSTALL_PATH})"
+    echo "Downloading files to:   $(prettify_dir "${DOWNLOAD_PATH}")"
+    echo "Installing projects in: $(prettify_dir "${INSTALL_PATH}")"
     echo
     if [ ${STABLE_BUILD} = true ]
     then
@@ -578,7 +580,8 @@ fi
 
 # If the PYTHON_EXECUTABLE environment variable hasn't been set,
 # set it to the default python executable
-default PYTHON_EXECUTABLE=$(which python)
+default PYTHON_EXECUTABLE=$(which python2)
+#default PYTHON_EXECUTABLE=$(which python)
 
 # If the platform doesn't override the system python by installing its
 # own, figure out the version of of the existing python
@@ -617,7 +620,7 @@ do
     TIC="$(${DATE_CMD} +%s%N)"
 
     # Return to the main Dorsal directory
-    cd ${ORIG_DIR}
+    cd "${ORIG_DIR}"
 
     # Skip building this package if the user requests it
     SKIP=false
