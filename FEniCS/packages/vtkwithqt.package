@@ -1,26 +1,49 @@
-NAME=vtk-5.8.0
-SOURCE=http://www.vtk.org/files/release/5.8/
+NAME=VTK-6.2.0
+SOURCE=http://www.vtk.org/files/release/6.2/
 PACKING=.tar.gz
 BUILDCHAIN=cmake
-EXTRACTSTO=VTK
+#EXTRACTSTO=VTK
 
-CONFOPTS="-D CMAKE_BUILD_TYPE:STRING=Release
-          -D BUILD_TESTING:BOOL=OFF
-          -D BUILD_SHARED_LIBS:BOOL=ON
-          -D VTK_WRAP_PYTHON:BOOL=ON
+CONFOPTS="-DCMAKE_BUILD_TYPE=Release
+          -D BUILD_TESTING=OFF
+          -D BUILD_SHARED_LIBS=ON
+          -D VTK_WRAP_PYTHON=ON
+          -DVTK_WRAP_JAVA=OFF
           -D VTK_USE_TK:BOOL=ON
-          -D VTK_USE_GL2PS:BOOL=ON
-          -D VTK_USE_QT=ON"
+          -D VTK_USE_QT=ON
+          -DVTK_USE_SYSTEM_EXPAT=ON
+		  -DVTK_USE_SYSTEM_FREETYPE=ON
+		  -DVTK_USE_SYSTEM_GL2PS=ON
+		  -DVTK_USE_SYSTEM_HDF5=ON
+		  -DVTK_USE_SYSTEM_JPEG=ON
+		  -DVTK_USE_SYSTEM_LIBXML2=ON
+	      -DVTK_USE_SYSTEM_OGGTHEORA=ON
+	      -DVTK_USE_SYSTEM_PNG=ON
+	      -DVTK_USE_SYSTEM_TIFF=ON
+	      -DVTK_USE_SYSTEM_ZLIB=ON
+	      -DVTK_Group_Imaging=ON
+		  -DVTK_Group_MPI=ON
+		  -DVTK_Group_Qt=ON
+		  -DVTK_Group_Tk=ON
+		  -DVTK_Group_Views=ON
+		  -DVTK_BUILD_ALL_MODULES=OFF
+		  -DMPI_CXX_INCLUDE_PATH="/usr/include/mpi"
+		  -DVTK_MAKE_INSTANTIATORS=ON"
 
 if [ -d "${VTK_DATA_ROOT}" ]; then
     CONFOPTS="${CONFOPTS} -D VTK_DATA_ROOT:PATH=${VTK_DATA_ROOT}"
 fi
 
-package_specific_setup () {
-    chmod 600 Utilities/vtktiff/tif_fax3sm.c
-}
+if [ ! -z "${PYTHON_EXECUTABLE}" ]; then
+    CONFOPTS="${CONFOPTS} -D PYTHON_EXECUTABLE:FILEPATH=${PYTHON_EXECUTABLE}"
+fi
+
+if [ ! -z "${PYTHON_INCLUDE_DIR}" ]; then
+    CONFOPTS="${CONFOPTS} -D PYTHON_INCLUDE_DIR:PATH=${PYTHON_INCLUDE_DIR}"
+fi
 
 package_specific_register () {
-    export LD_LIBRARY_PATH=${INSTALL_PATH}/lib/vtk-5.8:${LD_LIBRARY_PATH}
-    export DYLD_LIBRARY_PATH=${INSTALL_PATH}/lib/vtk-5.8:${DYLD_LIBRARY_PATH}
+	export VTK_DIR=${INSTALL_PATH}
+    #export LD_LIBRARY_PATH=${INSTALL_PATH}/lib/vtk-6.2:${LD_LIBRARY_PATH}
+    #export DYLD_LIBRARY_PATH=${INSTALL_PATH}/lib/vtk-6.2:${DYLD_LIBRARY_PATH}
 }
