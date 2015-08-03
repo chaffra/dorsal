@@ -4,11 +4,12 @@ PACKING=.tar.gz
 BUILDCHAIN=custom
 EXTRACTSTO=SuiteSparse
 
+
 package_specific_build () {
     mkdir -p ${INSTALL_PATH}/include/suitesparse
     cat > SuiteSparse_config/SuiteSparse_config.mk << EOF
 #CF = \$(CFLAGS) \$(CPPFLAGS) \$(TARGET_ARCH) -O3 -fexceptions -fPIC
-CF = \$(CFLAGS) \$(CPPFLAGS) \$(TARGET_ARCH) -O3 -fexceptions -fPIC -DNTIMER
+CF = \$(CFLAGS) \$(CPPFLAGS) \$(TARGET_ARCH) -O3 -fexceptions -DNTIMER
 RANLIB = ranlib
 ARCHIVE = \$(AR) \$(ARFLAGS)
 CP = cp -f
@@ -17,7 +18,7 @@ F77 = gfortran
 F77FLAGS = \$(FFLAGS) -O
 F77LIB =
 #LIB = -lm -lrt
-LIB = -lm
+LIB = -lm /usr/lib/libmsys-2.0.a
 INSTALL_LIB = ${INSTALL_PATH}/lib
 INSTALL_INCLUDE = ${INSTALL_PATH}/include/suitesparse
 XERBLA =
@@ -37,8 +38,8 @@ LAPACK = -L${ATLAS_LIB_DIR} -llapack
 EOF
     else
         cat >> SuiteSparse_config/SuiteSparse_config.mk << EOF
-BLAS = -lblas -lgfortran
-LAPACK = -llapack
+BLAS = -lblas -lgfortran -L${INSTALL_PATH}/bin
+LAPACK = -llapack -L${INSTALL_PATH}/bin
 EOF
     fi
 
@@ -52,4 +53,5 @@ package_specific_install () {
 package_specific_register () {
     export UMFPACK_DIR=${INSTALL_PATH}
     export SUITESPARSE_DIR=${INSTALL_PATH}
+	unset CC
 }

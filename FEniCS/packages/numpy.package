@@ -1,4 +1,4 @@
-NAME=numpy-1.6.2
+NAME=numpy-1.9.2
 SOURCE=http://downloads.sourceforge.net/numpy/
 PACKING=.tar.gz
 BUILDCHAIN=python
@@ -25,9 +25,9 @@ atlas_libs = lapack, blas
 " > site.cfg
     fi
 
-    python setup.py build --fcompiler=gnu95
+    ${PYTHON_EXECUTABLE} setup.py build --fcompiler=${FORTRAN_COMPILER}
 }
 
 package_specific_register () {
-    ln -sf ${INSTALL_PATH}/lib/python${PYTHONVER}/site-packages/numpy/core/include/numpy ${INSTALL_PATH}/include/python${PYTHONVER}
+#    ln -sf ${INSTALL_PATH}/lib/python${PYTHONVER}/site-packages/numpy/core/include/numpy ${INSTALL_PATH}/include/python${PYTHONVER}
 }

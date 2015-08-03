@@ -275,7 +275,12 @@ package_build() {
         echo mkdir -p ${BUILD_DIR} >>dorsal_configure
         echo cd ${BUILD_DIR} >>dorsal_configure
         echo rm -f CMakeCache.txt >>dorsal_configure
-        echo cmake ${CONFOPTS} -D CMAKE_INSTALL_PREFIX:PATH=${INSTALL_PATH} ../ >>dorsal_configure
+		if [${MSYSTEM} = "MSYS"]
+		then
+			echo cmake -G"MSYS\ Makefiles" ${CONFOPTS} -D CMAKE_INSTALL_PREFIX:PATH=${INSTALL_PATH} ../ >>dorsal_configure
+		else
+		    echo cmake ${CONFOPTS} -D CMAKE_INSTALL_PREFIX:PATH=${INSTALL_PATH} ../ >>dorsal_configure
+		fi
         for target in "${TARGETS[@]}"
         do
             echo make -C ${BUILD_DIR} ${MAKEOPTS} -j ${PROCS} $target >>dorsal_build
@@ -578,7 +583,7 @@ fi
 
 # If the PYTHON_EXECUTABLE environment variable hasn't been set,
 # set it to the default python executable
-default PYTHON_EXECUTABLE=$(which python)
+#default PYTHON_EXECUTABLE=$(which python)
 
 # If the platform doesn't override the system python by installing its
 # own, figure out the version of of the existing python
@@ -595,7 +600,9 @@ mkdir -p ${INSTALL_PATH}/share
 export PATH=${INSTALL_PATH}/bin:${PATH}
 export LD_LIBRARY_PATH=${INSTALL_PATH}/lib:${LD_LIBRARY_PATH}
 export DYLD_LIBRARY_PATH=${INSTALL_PATH}/lib:${DYLD_LIBRARY_PATH}
-export PYTHONPATH=${INSTALL_PATH}/lib/python${PYTHONVER}/site-packages:${PYTHONPATH}
+
+default PYTHONPATHSEP=`${PYTHON_EXECUTABLE} -c "import os; print os.pathsep"`
+export PYTHONPATH="${INSTALL_PATH}/lib/python${PYTHONVER}/site-packages${PYTHONPATHSEP}${PYTHONPATH}"
 export PKG_CONFIG_PATH=${INSTALL_PATH}/lib/pkgconfig:${PKG_CONFIG_PATH}
 ORIG_PROCS=${PROCS}
 
@@ -604,7 +611,7 @@ guess_architecture
 if [ "$ARCH" == "x86_64" ]; then
     export LD_LIBRARY_PATH=${INSTALL_PATH}/lib64:${LD_LIBRARY_PATH}
     export DYLD_LIBRARY_PATH=${INSTALL_PATH}/lib64:${DYLD_LIBRARY_PATH}
-    export PYTHONPATH=${INSTALL_PATH}/lib64/python${PYTHONVER}/site-packages:${PYTHONPATH}
+    export PYTHONPATH="${INSTALL_PATH}/lib64/python${PYTHONVER}/site-packages${PYTHONPATHSEP}${PYTHONPATH}"
 fi
 
 # Reset timings

@@ -1,7 +1,7 @@
 NAME=ScientificPython-2.8
 SOURCE=http://sourcesup.cru.fr/frs/download.php/2309/
 PACKING=.tar.gz
-CHECKSUM=82d8592635d6ae8608b3073dacf9e694
+CHECKSUM=f7d5f9d2c86a5c99cae4891e65e50db3
 BUILDCHAIN=python
 
 package_specific_setup () {
