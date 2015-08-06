@@ -1,9 +1,9 @@
-NAME=vtkdata-5.8.0
-SOURCE=http://www.vtk.org/files/release/5.8/
+NAME=VTKData-6.2.0
+SOURCE=http://www.vtk.org/files/release/6.2/
 PACKING=.tar.gz
-CHECKSUM=a05295b81930e894fc0e31866f399151
+CHECKSUM=d66b0eb99aa7078a1140ba66dbf690c6
 BUILDCHAIN=custom
-EXTRACTSTO=VTKData
+EXTRACTSTO=VTK-6.2.0
 
 package_specific_register () {
     export VTK_DATA_ROOT=${PWD}

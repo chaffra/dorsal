@@ -1,7 +1,16 @@
-diff -Nru Python-2.7.2.orig/Makefile.pre.in Python-2.7.2/Makefile.pre.in
---- Python-2.7.2.orig/Makefile.pre.in	2013-04-08 12:39:28.000000000 +0200
-+++ Python-2.7.2/Makefile.pre.in	2013-04-08 12:40:25.000000000 +0200
-@@ -426,7 +426,7 @@
+diff -ru Python-2.7.9.orig/Makefile.pre.in Python-2.7.9/Makefile.pre.in
+--- Python-2.7.9.orig/Makefile.pre.in	2014-12-10 10:59:50 -0500
++++ Python-2.7.9/Makefile.pre.in	2015-06-08 15:41:03 -0400
+@@ -189,7 +189,7 @@
+ DYNLOADFILE=	@DYNLOADFILE@
+ MACHDEP_OBJS=	@MACHDEP_OBJS@
+ LIBOBJDIR=	Python/
+-LIBOBJS=	@LIBOBJS@
++LIBOBJS=
+ UNICODE_OBJS=   @UNICODE_OBJS@
+ 
+ PYTHON=		python$(EXE)
+@@ -491,7 +491,7 @@
  libpython$(VERSION).so: $(LIBRARY_OBJS)
  	if test $(INSTSONAME) != $(LDLIBRARY); then \
  		$(BLDSHARED) -Wl,-h$(INSTSONAME) -o $(INSTSONAME) $(LIBRARY_OBJS) $(MODLIBS) $(SHLIBS) $(LIBC) $(LIBM) $(LDLAST); \
@@ -10,12 +19,125 @@ diff -Nru Python-2.7.2.orig/Makefile.pre.in Python-2.7.2/Makefile.pre.in
  	else \
  		$(BLDSHARED) -o $@ $(LIBRARY_OBJS) $(MODLIBS) $(SHLIBS) $(LIBC) $(LIBM) $(LDLAST); \
  	fi
-@@ -792,7 +792,7 @@
- 	then rm -f $(DESTDIR)$(BINDIR)/$(PYTHON); \
- 	else true; \
- 	fi
--	(cd $(DESTDIR)$(BINDIR); $(LN) python$(VERSION)$(EXE) $(PYTHON))
-+	(cd $(DESTDIR)$(BINDIR); $(LN) -s python$(VERSION)$(EXE) $(PYTHON))
- 	-rm -f $(DESTDIR)$(BINDIR)/python-config
- 	(cd $(DESTDIR)$(BINDIR); $(LN) -s python$(VERSION)-config python-config)
- 	-test -d $(DESTDIR)$(LIBPC) || $(INSTALL) -d -m $(DIRMODE) $(DESTDIR)$(LIBPC)
+diff -ru Python-2.7.9.orig/Modules/posixmodule.c Python-2.7.9/Modules/posixmodule.c
+--- Python-2.7.9.orig/Modules/posixmodule.c	2014-12-10 10:59:55 -0500
++++ Python-2.7.9/Modules/posixmodule.c	2015-06-08 15:40:32 -0400
+@@ -137,25 +137,33 @@
+ #else                   /* all other compilers */
+ /* Unix functions that the configure script doesn't check for */
+ #define HAVE_EXECV      1
++#if !defined(__MINGW32__)
+ #define HAVE_FORK       1
++#endif
+ #if defined(__USLC__) && defined(__SCO_VERSION__)       /* SCO UDK Compiler */
+ #define HAVE_FORK1      1
+ #endif
+ #define HAVE_GETCWD     1
++#if !defined(__MINGW32__)
+ #define HAVE_GETEGID    1
+ #define HAVE_GETEUID    1
+ #define HAVE_GETGID     1
+ #define HAVE_GETPPID    1
+ #define HAVE_GETUID     1
+ #define HAVE_KILL       1
++#endif
+ #define HAVE_OPENDIR    1
++#if !defined(__MINGW32__)
+ #define HAVE_PIPE       1
++#endif
+ #ifndef __rtems__
+ #define HAVE_POPEN      1
+ #endif
+ #define HAVE_SYSTEM     1
++#if !defined(__MINGW32__)
+ #define HAVE_WAIT       1
+ #define HAVE_TTYNAME    1
++#endif
+ #endif  /* PYOS_OS2 && PYCC_GCC && __VMS */
+ #endif  /* _MSC_VER */
+ #endif  /* __BORLANDC__ */
+@@ -174,7 +182,7 @@
+ #if defined(PYCC_VACPP)
+ extern int mkdir(char *);
+ #else
+-#if ( defined(__WATCOMC__) || defined(_MSC_VER) ) && !defined(__QNX__)
++#if ( defined(__WATCOMC__) || defined(_MSC_VER) || defined(__MINGW32__)) && !defined(__QNX__)
+ extern int mkdir(const char *);
+ #else
+ extern int mkdir(const char *, mode_t);
+@@ -2653,7 +2661,7 @@
+                           Py_FileSystemDefaultEncoding, &path, &mode))
+         return NULL;
+     Py_BEGIN_ALLOW_THREADS
+-#if ( defined(__WATCOMC__) || defined(PYCC_VACPP) ) && !defined(__QNX__)
++#if ( defined(__WATCOMC__) || defined(PYCC_VACPP) || defined(__MINGW32__)) && !defined(__QNX__)
+     res = mkdir(path);
+ #else
+     res = mkdir(path, mode);
+@@ -3906,9 +3914,14 @@
+     if (slave_fd < 0)
+         return posix_error();
+ #else
++#if !defined(__MINGW32__)
+     master_fd = open(DEV_PTY_FILE, O_RDWR | O_NOCTTY); /* open master */
++#else
++    master_fd = open(DEV_PTY_FILE, O_RDWR); /* open master */
++#endif
+     if (master_fd < 0)
+         return posix_error();
++#if !defined(__MINGW32__)
+     sig_saved = PyOS_setsig(SIGCHLD, SIG_DFL);
+     /* change permission of slave */
+     if (grantpt(master_fd) < 0) {
+@@ -3924,10 +3937,15 @@
+     slave_name = ptsname(master_fd); /* get name of slave */
+     if (slave_name == NULL)
+         return posix_error();
++#endif
++#if !defined(__MINGW32__)
+     slave_fd = open(slave_name, O_RDWR | O_NOCTTY); /* open slave */
++#else
++    slave_fd = open(slave_name, O_RDWR); /* open slave */
++#endif
+     if (slave_fd < 0)
+         return posix_error();
+-#if !defined(__CYGWIN__) && !defined(HAVE_DEV_PTC)
++#if !defined(__CYGWIN__) && !defined(__MINGW32__) && !defined(HAVE_DEV_PTC)
+     ioctl(slave_fd, I_PUSH, "ptem"); /* push ptem */
+     ioctl(slave_fd, I_PUSH, "ldterm"); /* push ldterm */
+ #ifndef __hpux
+@@ -6879,7 +6897,7 @@
+         return NULL;
+     }
+     Py_BEGIN_ALLOW_THREADS
+-#if !defined(MS_WINDOWS) && defined(HAVE_FCNTL_H)
++#if !defined(MS_WINDOWS) && !defined(__MINGW32__) && defined(HAVE_FCNTL_H)
+     if (mode[0] == 'a') {
+         /* try to make sure the O_APPEND flag is set */
+         int flags;
+diff -ru Python-2.7.9.orig/Modules/pwdmodule.c Python-2.7.9/Modules/pwdmodule.c
+--- Python-2.7.9.orig/Modules/pwdmodule.c	2014-12-10 10:59:55 -0500
++++ Python-2.7.9/Modules/pwdmodule.c	2015-06-08 14:53:25 -0400
+@@ -1,4 +1,4 @@
+-
++#if !defined(__MINGW32__)
+ /* UNIX password file access module */
+ 
+ #include "Python.h"
+@@ -206,3 +206,4 @@
+     PyModule_AddObject(m, "struct_pwent", (PyObject *) &StructPwdType);
+     initialized = 1;
+ }
++#endif
+diff -ru Python-2.7.9.orig/Python/import.c Python-2.7.9/Python/import.c
+--- Python-2.7.9.orig/Python/import.c	2014-12-10 10:59:59 -0500
++++ Python-2.7.9/Python/import.c	2015-06-08 15:12:57 -0400
+@@ -907,7 +907,7 @@
+ write_compiled_module(PyCodeObject *co, char *cpathname, struct stat *srcstat, time_t mtime)
+ {
+     FILE *fp;
+-#ifdef MS_WINDOWS   /* since Windows uses different permissions  */
++#if defined(MS_WINDOWS) || defined(__MINGW32__)   /* since Windows uses different permissions  */
+     mode_t mode = srcstat->st_mode & ~S_IEXEC;
+     /* Issue #6074: We ensure user write access, so we can delete it later
+      * when the source file changes. (On POSIX, this only requires write
