@@ -1,0 +1,10 @@
+NAME=semifem
+SOURCE=https://chaffra@affouda.nrl.navy.mil/git/fenics/
+PACKING=git
+BUILDCHAIN=python
+
+GIT_SSL_NO_VERIFY=1
+
+package_specific_register () {
+    unset GIT_SSL_NO_VERIFY
+}
