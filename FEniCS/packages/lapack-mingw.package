@@ -5,18 +5,6 @@ PACKING=.tgz
 BUILDCHAIN=cmake
 CONFOPTS="-DBUILD_SHARED_LIBS:BOOL=ON -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}"
 
-#package_specific_build () {
-#    cp make.inc.example make.inc
-#    sed -i 's/gfortran/mpif90 -O3 -fPIC/g' make.inc
-#    sed -i 's/lapack$(PLAT).a/liblapack.a/g' make.inc
-#    sed -i 's/tmglib$(PLAT).a/libtmglib.a/g' make.inc
-#    sed -i 's,../../blas$(PLAT).a,${INSTALL_PATH}/lib/libblas.a,g' make.inc
-#    make lapack_install lib -j ${PROCS}
-#}
-
-#package_specific_install () {
-#    cp *.a ${INSTALL_PATH}/lib/
-#}
 
 package_specific_register () {
     export LAPACK_DIR=${INSTALL_PATH}

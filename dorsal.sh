@@ -277,9 +277,12 @@ package_build() {
         echo mkdir -p ${BUILD_DIR} >>dorsal_configure
         echo cd ${BUILD_DIR} >>dorsal_configure
         echo rm -f CMakeCache.txt >>dorsal_configure
-		if [${MSYSTEM} = "MSYS"]
+		if [ "$MSYSTEM" == "MSYS" ];
 		then
-			echo cmake -G"MSYS\ Makefiles" ${CONFOPTS} -D CMAKE_INSTALL_PREFIX:PATH=${INSTALL_PATH} ../ >>dorsal_configure
+			echo cmake -G"Unix\ Makefiles" ${CONFOPTS} -D CMAKE_INSTALL_PREFIX:PATH=${INSTALL_PATH} ../ >>dorsal_configure
+		elif [ "$MSYSTEM" = "MINGW64" ]
+		then
+		    echo cmake -G"MSYS\ Makefiles" ${CONFOPTS} -D CMAKE_INSTALL_PREFIX:PATH=${INSTALL_PATH} ../ >>dorsal_configure
 		else
 		    echo cmake ${CONFOPTS} -D CMAKE_INSTALL_PREFIX:PATH=${INSTALL_PATH} ../ >>dorsal_configure
 		fi
@@ -585,11 +588,7 @@ fi
 
 # If the PYTHON_EXECUTABLE environment variable hasn't been set,
 # set it to the default python executable
-<<<<<<< HEAD
-default PYTHON_EXECUTABLE=$(which python2)
-=======
->>>>>>> 58ab6b4ad13e7fd8d995d8be55fb818eeda4cd00
-#default PYTHON_EXECUTABLE=$(which python)
+default PYTHON_EXECUTABLE=$(which python)
 
 # If the platform doesn't override the system python by installing its
 # own, figure out the version of of the existing python
