@@ -1,4 +1,4 @@
-VERSION=3.2.1
+VERSION=4.0.0-b1
 NAME=ipython-${VERSION}
 SOURCE=http://archive.ipython.org/release/${VERSION}/
 PACKING=.tar.gz

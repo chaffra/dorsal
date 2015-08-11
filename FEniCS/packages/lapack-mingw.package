@@ -1,0 +1,12 @@
+VERSION=3.5.0
+NAME=lapack-${VERSION}
+SOURCE=http://www.netlib.org/lapack/
+PACKING=.tgz
+BUILDCHAIN=cmake
+CONFOPTS="-DBUILD_SHARED_LIBS:BOOL=ON -DPYTHON_EXECUTABLE=${PYTHON_EXECUTABLE}"
+
+
+package_specific_register () {
+    export LAPACK_DIR=${INSTALL_PATH}
+    export LAPACKANDBLAS_DIR=${INSTALL_PATH}/lib
+}

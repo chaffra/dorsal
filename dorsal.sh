@@ -243,8 +243,10 @@ package_build() {
 	echo "#!/usr/bin/env bash" >${cmd_file}
 	chmod a+x ${cmd_file}
 
-        # Write variables to files so that they can be run stand-alone
+    # Write variables to files so that they can be run stand-alone
 	declare -x >>${cmd_file}
+	sed -i'' s/"CommonProgramFiles(x86)"/"CommonProgramFiles_x86"/g ${cmd_file}
+	sed -i'' s/"ProgramFiles(x86)"/"ProgramFiles_x86"/g ${cmd_file}
 
         # From this point in dorsal_*, errors are fatal
 	echo "set -e" >>${cmd_file}
@@ -275,7 +277,15 @@ package_build() {
         echo mkdir -p ${BUILD_DIR} >>dorsal_configure
         echo cd ${BUILD_DIR} >>dorsal_configure
         echo rm -f CMakeCache.txt >>dorsal_configure
-        echo cmake ${CONFOPTS} -D CMAKE_INSTALL_PREFIX:PATH=${INSTALL_PATH} ../ >>dorsal_configure
+		if [ "$MSYSTEM" == "MSYS" ];
+		then
+			echo cmake -G"Unix\ Makefiles" ${CONFOPTS} -D CMAKE_INSTALL_PREFIX:PATH=${INSTALL_PATH} ../ >>dorsal_configure
+		elif [ "$MSYSTEM" = "MINGW64" ]
+		then
+		    echo cmake -G"MSYS\ Makefiles" ${CONFOPTS} -D CMAKE_INSTALL_PREFIX:PATH=${INSTALL_PATH} ../ >>dorsal_configure
+		else
+		    echo cmake ${CONFOPTS} -D CMAKE_INSTALL_PREFIX:PATH=${INSTALL_PATH} ../ >>dorsal_configure
+		fi
         for target in "${TARGETS[@]}"
         do
             echo make -C ${BUILD_DIR} ${MAKEOPTS} -j ${PROCS} $target >>dorsal_build
@@ -521,8 +531,8 @@ then
     # e.g. apt-get commands is easy.
     awk '/^##/ {exit} {$1=""; print}' <${PLATFORM}
     echo
-    echo "Downloading files to:   $(prettify_dir ${DOWNLOAD_PATH})"
-    echo "Installing projects in: $(prettify_dir ${INSTALL_PATH})"
+    echo "Downloading files to:   $(prettify_dir "${DOWNLOAD_PATH}")"
+    echo "Installing projects in: $(prettify_dir "${INSTALL_PATH}")"
     echo
     if [ ${STABLE_BUILD} = true ]
     then
@@ -595,7 +605,9 @@ mkdir -p ${INSTALL_PATH}/share
 export PATH=${INSTALL_PATH}/bin:${PATH}
 export LD_LIBRARY_PATH=${INSTALL_PATH}/lib:${LD_LIBRARY_PATH}
 export DYLD_LIBRARY_PATH=${INSTALL_PATH}/lib:${DYLD_LIBRARY_PATH}
-export PYTHONPATH=${INSTALL_PATH}/lib/python${PYTHONVER}/site-packages:${PYTHONPATH}
+
+default PYTHONPATHSEP=`${PYTHON_EXECUTABLE} -c "import os; print os.pathsep"`
+export PYTHONPATH="${INSTALL_PATH}/lib/python${PYTHONVER}/site-packages${PYTHONPATHSEP}${PYTHONPATH}"
 export PKG_CONFIG_PATH=${INSTALL_PATH}/lib/pkgconfig:${PKG_CONFIG_PATH}
 ORIG_PROCS=${PROCS}
 
@@ -604,7 +616,7 @@ guess_architecture
 if [ "$ARCH" == "x86_64" ]; then
     export LD_LIBRARY_PATH=${INSTALL_PATH}/lib64:${LD_LIBRARY_PATH}
     export DYLD_LIBRARY_PATH=${INSTALL_PATH}/lib64:${DYLD_LIBRARY_PATH}
-    export PYTHONPATH=${INSTALL_PATH}/lib64/python${PYTHONVER}/site-packages:${PYTHONPATH}
+    export PYTHONPATH="${INSTALL_PATH}/lib64/python${PYTHONVER}/site-packages${PYTHONPATHSEP}${PYTHONPATH}"
 fi
 
 # Reset timings
@@ -617,7 +629,7 @@ do
     TIC="$(${DATE_CMD} +%s%N)"
 
     # Return to the main Dorsal directory
-    cd ${ORIG_DIR}
+    cd "${ORIG_DIR}"
 
     # Skip building this package if the user requests it
     SKIP=false

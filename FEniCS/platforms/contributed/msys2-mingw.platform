@@ -1,0 +1,32 @@
+# Tested FEniCS on the MinGW32 with MSYS2
+# Author: Chaffra Affouda <chaffra.affouda@nrl.navy.mil>
+# No root priviliges required.
+# After Dorsal has completed, make sure the following
+# environment variables are set (for instance in ~/.bashrc):
+#
+# export BOOST_DIR=${INSTALL_PATH}
+# export LD_LIBRARY_PATH=${INSTALL_PATH}/lib/vtk-5.8:${LD_LIBRARY_PATH}
+##
+
+# Platform specific variables
+
+default PETSC_ARCH=arch-msys-cxx-opt
+default CMAKE_PREFIX_PATH=${INSTALL_PATH}
+
+# Define the packages this platform needs
+PACKAGES=(
+pyreadline-msys2-mingw
+#ipython-msys2-mingw
+#lapack-msys2
+#petsc-msys2
+sympy
+fiat
+ufl
+ffc-msys2
+instant
+#vtkwithqt-msys2-mingw
+ply
+#python-six
+skip:dolfin-msys2-mingw
+semifem
+)

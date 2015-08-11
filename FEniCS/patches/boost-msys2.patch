@@ -1,0 +1,12 @@
+--- debug.ipp.orig	2012-12-13 16:32:58.000000000 -0500
++++ debug.ipp	2015-04-30 10:32:27.801541300 -0400
+@@ -71,6 +71,9 @@
+ #  include <sys/stat.h>
+ #  include <sys/wait.h>
+ #  include <sys/time.h>
++#if defined(__MSYS2__)
++#  include <sys/select.h>
++#endif
+ #  include <stdio.h>
+ #  include <stdlib.h>
+ 

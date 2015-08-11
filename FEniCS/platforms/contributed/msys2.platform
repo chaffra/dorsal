@@ -1,0 +1,39 @@
+# Tested FEniCS on the MinGW32 with MSYS2
+# Author: Chaffra Affouda <chaffra.affouda@nrl.navy.mil>
+# No root priviliges required.
+# Set up environment:
+#   module unload intel-compiler/11.1 python openmpi
+#   module load openmpi/1.4.4_gnu gcc/4.6.20120210
+#
+# After Dorsal has completed, make sure the following
+# environment variables are set (for instance in ~/.bashrc):
+#
+# export BOOST_DIR=${INSTALL_PATH}
+# export LD_LIBRARY_PATH=${INSTALL_PATH}/lib/vtk-5.8:${LD_LIBRARY_PATH}
+##
+
+# Platform specific variables
+
+default PETSC_ARCH=arch-msys-cxx-opt
+default CMAKE_PREFIX_PATH=${INSTALL_PATH}
+
+# Define the packages this platform needs
+PACKAGES=(
+#pcre
+#swig
+#clapack-msys2
+#lapack-msys2
+skip:suitesparse-msys2
+skip:petsc-msys2
+skip:eigen
+fiat
+ufl
+numpy
+ffc-msys2
+instant
+#vtk
+ply
+python-six
+sympy
+dolfin-msys2
+)

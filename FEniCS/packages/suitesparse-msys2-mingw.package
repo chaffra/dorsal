@@ -1,0 +1,21 @@
+NAME=suitesparse
+SOURCE=http://faculty.cse.tamu.edu/davis/SuiteSparse/
+PACKING=.tar.gz
+BUILDCHAIN=custom
+EXTRACTSTO=SuiteSparse
+
+package_fetch () { true;}
+package_verify () { true;}
+package_unpack () { true;}
+
+package_specific_setup () { true;}
+package_specific_build () { true;}
+
+package_specific_install () {
+    pacman -Su mingw64/mingw-w64-x86_64-suitesparse -w
+}
+
+package_specific_register () {
+    export UMFPACK_DIR=${INSTALL_PATH}
+    export SUITESPARSE_DIR=${INSTALL_PATH}
+}

@@ -1,0 +1,18 @@
+VERSION=2.7.9
+NAME=Python-${VERSION}
+SOURCE=http://www.python.org/ftp/python/${VERSION}/
+PACKING=.tar.xz
+BUILDCHAIN=custom
+#CFLAGS="-DNDEBUG -DPy_BUILD_CORE -DPy_ENABLE_SHARED -DWIN32 -D_WIN32_WINNT=0x0502 -DWINVER=0x0500"
+CONFOPTS="--enable-shared"
+
+#package_specific_setup() {
+#    patch -p1 --forward < ${ORIG_DIR}/FEniCS/patches/python.patch || true
+#}
+
+package_specific_register() {
+    export PYTHON_DIR=${INSTALL_PATH}/lib/Python2.7
+    export PYTHON_EXECUTABLE=${PYTHON_DIR}/python.exe
+    export PYTHON_INCLUDE_DIR=${PYTHON_DIR}/include
+    export PYTHON_LIBRARY=${PYTHON_DIR}/python27.dll
+}

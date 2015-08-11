@@ -1,9 +1,9 @@
-VERSION=2.7.2
+VERSION=2.7.9
 NAME=Python-${VERSION}
 SOURCE=http://www.python.org/ftp/python/${VERSION}/
-PACKING=.tar.bz2
+PACKING=.tgz
 BUILDCHAIN=autotools
-CONFOPTS="--enable-shared"
+CONFOPTS="--enable-shared -m32"
 
 package_specific_setup() {
     patch -p1 --forward < ${ORIG_DIR}/FEniCS/patches/python.patch || true

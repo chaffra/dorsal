@@ -1,0 +1,5 @@
+VERSION=2.0
+NAME=pyreadline-${VERSION}
+SOURCE=https://pypi.python.org/packages/source/p/pyreadline/
+PACKING=.zip
+BUILDCHAIN=python

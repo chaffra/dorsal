@@ -1,0 +1,38 @@
+NAME=boost_1_58_0
+SOURCE=http://downloads.sourceforge.net/boost/
+PACKING=.tar.bz2
+BUILDCHAIN=custom
+#CHECKSUM=15cb8c0803064faef0c4ddf5bc5ca279
+
+
+if [ ! -z "${BZIP2_DIR}" ]; then
+    CONFOPTS="${CONFOPTS}
+              -sNO_BZIP2=0
+              -sBZIP2_BINARY=bz2
+              -sBZIP2_INCLUDE=${BZIP2_DIR}/include
+              -sBZIP2_LIBPATH=${BZIP2_DIR}/lib"
+fi
+
+CONFOPTS="${CONFOPTS}
+              -sNO_ZLIB=0
+			  -sZLIB_BINARY=msys-z
+              -sZLIB_INCLUDE=/usr/include
+              -sZLIB_LIBPATH=/usr/bin"
+			  
+package_specific_setup () {
+	patch -p1 --forward < ${ORIG_DIR}/FEniCS/patches/boost-msys2.patch || true
+}
+			  
+package_specific_build () {
+    ./bootstrap.sh --prefix=${INSTALL_PATH}
+	 echo "using python : 2.7 : ${PYTHON_EXECUTABLE} : /usr/include/Python2.7 : /usr/lib : ;" > user-config.jam
+	 echo "using zlib : : <name>msys-z <search>/usr/bin : : : ;" >> user-config.jam
+    ./b2 -j ${PROCS} variant=release threading=multi ${CONFOPTS} --debug-configuration --without-coroutine --without-context --without-mpi --without-python --user-config=./user-config.jam --build-dir=dorsal_build_dir link=shared install
+}
+
+package_specific_register () {
+    export BOOST_ROOT=${INSTALL_PATH}
+    export BOOST_INCLUDEDIR=${INSTALL_PATH}/include
+    export BOOST_LIBRARYDIR=${INSTALL_PATH}/lib
+    export BOOST_USE_MULTITHREADED=OFF
+}

@@ -4,6 +4,9 @@ PACKING=.tar.gz
 BUILDCHAIN=python
 
 package_specific_setup () {
+
+#	patch -p1 --forward < ${ORIG_DIR}/FEniCS/patches/numpy-1.9.2.patch || true
+
     if [ ! -z "${ATLAS_LIB_DIR}" ]; then
 	echo "
 [DEFAULT]
@@ -20,14 +23,14 @@ libraries = lapack, f77blas, cblas, atlas
     elif [ ! -z "${LAPACKANDBLAS_DIR}" ]; then
 	echo "
 [atlas]
-library_dirs = ${LAPACKANDBLAS_DIR}
+library_dirs = ${INSTALL_PATH_WIN32}/bin
 atlas_libs = lapack, blas
 " > site.cfg
     fi
 
-    ${PYTHON_EXECUTABLE} setup.py build --fcompiler=${FORTRAN_COMPILER}
+    ${PYTHON_EXECUTABLE} setup.py build --fcompiler=gfortran
 }
 
-package_specific_register () {
+#package_specific_register () {
 #    ln -sf ${INSTALL_PATH}/lib/python${PYTHONVER}/site-packages/numpy/core/include/numpy ${INSTALL_PATH}/include/python${PYTHONVER}
-}
+#}
