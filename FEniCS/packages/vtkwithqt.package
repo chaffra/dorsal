@@ -1,8 +1,8 @@
-NAME=VTK-6.2.0
-SOURCE=http://www.vtk.org/files/release/6.2/
-PACKING=.tar.gz
+NAME=vtk.git
+SOURCE="https://gitlab.kitware.com/chaffra/vtk.git "
+PACKING=git
 BUILDCHAIN=cmake
-#EXTRACTSTO=VTK
+EXTRACTSTO=vtk.git
 
 CONFOPTS="-DCMAKE_BUILD_TYPE=Release
           -D BUILD_TESTING=OFF
