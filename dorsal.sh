@@ -260,7 +260,7 @@ package_build() {
         fi
         for target in "${TARGETS[@]}"
         do
-            echo make ${MAKEOPTS} -j ${PROCS} $target >>dorsal_build
+            echo ${MAKE} ${MAKEOPTS} -j ${PROCS} $target >>dorsal_build
         done
     elif [ ${BUILDCHAIN} = "python" ]
     then
@@ -282,13 +282,13 @@ package_build() {
 			echo cmake -G"Unix\ Makefiles" ${CONFOPTS} -D CMAKE_INSTALL_PREFIX:PATH=${INSTALL_PATH} ../ >>dorsal_configure
 		elif [ "$MSYSTEM" = "MINGW64" ]
 		then
-		    echo cmake -G"MSYS\ Makefiles" ${CONFOPTS} -D CMAKE_INSTALL_PREFIX:PATH=${INSTALL_PATH} ../ >>dorsal_configure
+		    echo cmake -G"MinGW\ Makefiles" ${CONFOPTS} -D CMAKE_INSTALL_PREFIX:PATH=${INSTALL_PATH} ../ >>dorsal_configure
 		else
 		    echo cmake ${CONFOPTS} -D CMAKE_INSTALL_PREFIX:PATH=${INSTALL_PATH} ../ >>dorsal_configure
 		fi
         for target in "${TARGETS[@]}"
         do
-            echo make -C ${BUILD_DIR} ${MAKEOPTS} -j ${PROCS} $target >>dorsal_build
+            echo ${MAKE} -C ${BUILD_DIR} ${MAKEOPTS} -j ${PROCS} $target >>dorsal_build
         done
     elif [ ${BUILDCHAIN} = "custom" ]
     then
@@ -477,6 +477,7 @@ default INSTALL_PATH=${HOME}/Work/${PROJECT}
 default PROCS=1
 default STABLE_BUILD=true
 default USE_SNAPSHOTS=false
+default MAKE=make
 
 # Check if project was specified correctly
 if [ -d ${PROJECT} ]
