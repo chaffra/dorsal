@@ -3,11 +3,15 @@ SOURCE=https://bitbucket.org/chaffra/
 PACKING=git
 BUILDCHAIN=cmake
 
+#export OLD_PATH=${PATH}
+#export PATH=`echo ${PATH} | awk -v RS=: -v ORS=: '/usr\/bin/ {next} {print}' | sed 's/:*$//'`
+#export PATH=`echo ${PATH} | awk -v RS=: -v ORS=: '/\/bin/ {next} {print}' | sed 's/:*$//'`
+
 CONFOPTS=""
 CONFOPTS="${CONFOPTS} -DCMAKE_SKIP_RPATH:BOOL=ON"
 CONFOPTS="${CONFOPTS} -DDOLFIN_ENABLE_PETSC:BOOL=OFF"
 CONFOPTS="${CONFOPTS} -DDOLFIN_ENABLE_QT:BOOL=OFF"
-CONFOPTS="${CONFOPTS} -DDOLFIN_ENABLE_VTK:BOOL=ON"
+CONFOPTS="${CONFOPTS} -DDOLFIN_ENABLE_VTK:BOOL=OFF"
 CONFOPTS="${CONFOPTS} -DBUILD_SHARED_LIBS:BOOL=ON"
 CONFOPTS="${CONFOPTS} -DDOLFIN_LIB_DIR:PATH=bin"
 
@@ -47,4 +51,8 @@ if [ ! -z "${HDF5_DIR}" ]; then
     CONFOPTS="${CONFOPTS}
               -D HDF5_INCLUDE_DIRS=${HDF5_DIR}/include"
 fi
+
+#package_specific_register () {
+#    export PATH=${OLD_PATH}
+#}
 
