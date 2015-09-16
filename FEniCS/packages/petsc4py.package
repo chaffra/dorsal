@@ -1,5 +1,5 @@
-NAME=petsc4py-3.5
+NAME=petsc4py-3.5.1
 SOURCE=https://bitbucket.org/petsc/petsc4py/downloads/
 PACKING=.tar.gz
-CHECKSUM=9b485ca224ff38d6407f2adb431103ed
+CHECKSUM=
 BUILDCHAIN=python

@@ -1,11 +1,11 @@
 NAME=slepc-3.5.2
-SOURCE=http://www.fenicsproject.org/pub/software/contrib/
+SOURCE="http://slepc.upv.es/download/download.php?filename="
 PACKING=.tar.gz
 CHECKSUM=a54ec4016021b2ec461d6c1ea4b34300
 BUILDCHAIN=custom
 
 package_specific_setup () {
-    patch -p1 --forward < ${ORIG_DIR}/FEniCS/patches/slepc.patch || true
+#    patch -p1 --forward < ${ORIG_DIR}/FEniCS/patches/slepc.patch || true
     export SLEPC_DIR=${PWD}
 }
 

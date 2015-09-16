@@ -1,8 +1,8 @@
-NAME=eigen3_3.2.0
-SOURCE=http://fenicsproject.org/pub/software/contrib/
-PACKING=.tar.bz2
+NAME=eigen
+SOURCE=https://chaffra@bitbucket.org/chaffra/
+PACKING=hg
 BUILDCHAIN=cmake
-EXTRACTSTO=eigen3
+#EXTRACTSTO=eigen3
 
 package_specific_register () {
     export EIGEN_DIR=${INSTALL_PATH}
