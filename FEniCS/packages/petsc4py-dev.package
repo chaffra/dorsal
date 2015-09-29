@@ -1,0 +1,8 @@
+NAME=petsc4py
+SOURCE=https://bitbucket.org/petsc/
+PACKING=git
+BUILDCHAIN=python
+
+package_specific_setup () {
+    default PETSC_DIR=${INSTALL_PATH}
+}

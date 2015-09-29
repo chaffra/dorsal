@@ -1,0 +1,9 @@
+NAME=slepc4py
+SOURCE=https://bitbucket.org/slepc/
+PACKING=git
+BUILDCHAIN=python
+
+package_specific_setup () {
+    default SLEPC_DIR=${INSTALL_PATH}
+    default PETSC_DIR=${INSTALL_PATH}
+}
