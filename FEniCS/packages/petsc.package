@@ -1,13 +1,18 @@
-NAME=petsc-3.5.2
+NAME=petsc-3.6.1
+#NAME=petsc-dev
 SOURCE=http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/
 PACKING=.tar.gz
-CHECKSUM=ad170802b3b058b5deb9cd1f968e7e13
+#CHECKSUM=ad170802b3b058b5deb9cd1f968e7e13
+CHECKSUM=28f842697159e16e2978732480571147
 BUILDCHAIN=custom
+#EXTRACTSTO=petsc-master
+
+default PETSC_ARCH=arch-linux2-cxx-opt
 
 CONFOPTS="COPTFLAGS=-O2
           --with-debugging=1 --with-shared-libraries=1
-          --with-clanguage=cxx --with-c-support=1"
-#	  --with-precision=__float128  --download-f2cblaslapack=1"
+          --with-clanguage=cxx --with-c-support=1 --with-pthreadclasses=0  --with-openmp=0"
+#	  --with-precision=__float128  --download-f2cblaslapack=1 --with-pthreadclasses=1 --with-openmp=1"
 
 for external_pkg in suitesparse hypre mumps scalapack blacs ptscotch scotch metis parmetis ${PETSC_EXTRA_PACKAGES}; do
     CONFOPTS="${CONFOPTS} --download-${external_pkg}=1"

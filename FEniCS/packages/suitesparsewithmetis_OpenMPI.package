@@ -1,6 +1,6 @@
-VERSION=3.4.0
+VERSION=4.4.4
 NAME=SuiteSparse-${VERSION}
-SOURCE=http://www.cise.ufl.edu/research/sparse/SuiteSparse/
+SOURCE=http://faculty.cse.tamu.edu/davis/SuiteSparse/
 PACKING=.tar.gz
 BUILDCHAIN=custom
 EXTRACTSTO=SuiteSparse
