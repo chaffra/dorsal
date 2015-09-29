@@ -28,6 +28,6 @@ atlas_libs = lapack, blas
     ${PYTHON_EXECUTABLE} setup.py build --fcompiler=${FORTRAN_COMPILER}
 }
 
-package_specific_register () {
+#package_specific_register () {
 #    ln -sf ${INSTALL_PATH}/lib/python${PYTHONVER}/site-packages/numpy/core/include/numpy ${INSTALL_PATH}/include/python${PYTHONVER}
-}
+#}

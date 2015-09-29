@@ -1,0 +1,21 @@
+NAME=slepc
+SOURCE=https://bitbucket.org/slepc/
+PACKING=git
+#CHECKSUM=a54ec4016021b2ec461d6c1ea4b34300
+BUILDCHAIN=custom
+
+package_specific_setup () {
+    #patch -p1 --forward < ${ORIG_DIR}/FEniCS/patches/slepc.patch || true
+    export SLEPC_DIR=${PWD}
+    default PETSC_DIR=${INSTALL_PATH}
+}
+
+package_specific_build () {
+    SLEPC_DIR=${PWD} ./configure --prefix=${INSTALL_PATH}
+    make all
+    make install
+}
+
+package_specific_register () {
+    export SLEPC_DIR=${INSTALL_PATH}
+}
