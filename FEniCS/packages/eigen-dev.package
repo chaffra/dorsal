@@ -1,0 +1,9 @@
+NAME=eigen
+SOURCE=https://bitbucket.org/eigen/
+PACKING=hg
+BUILDCHAIN=cmake
+#EXTRACTSTO=eigen3
+
+package_specific_register () {
+    export EIGEN_DIR=${INSTALL_PATH}
+}
