@@ -1,4 +1,4 @@
 NAME=uflacs
-SOURCE=https://bitbucket.org/fenics-project/
+SOURCE=https://chaffra@bitbucket.org/chaffra/
 PACKING=git
 BUILDCHAIN=python

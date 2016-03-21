@@ -1,16 +1,38 @@
-NAME=vtk-5.8.0
-SOURCE=http://www.vtk.org/files/release/5.8/
-PACKING=.tar.gz
-CHECKSUM=37b7297d02d647cc6ca95b38174cb41f
+NAME=vtk.git
+SOURCE="https://gitlab.kitware.com/chaffra/vtk.git "
+PACKING=git
 BUILDCHAIN=cmake
-EXTRACTSTO=VTK
+EXTRACTSTO=vtk.git
 
-CONFOPTS="-D CMAKE_BUILD_TYPE:STRING=Release
-          -D BUILD_TESTING:BOOL=OFF
-          -D BUILD_SHARED_LIBS:BOOL=ON
-          -D VTK_WRAP_PYTHON:BOOL=ON
-          -D VTK_USE_TK:BOOL=ON
-          -D VTK_USE_GL2PS:BOOL=ON"
+CONFOPTS="-DCMAKE_BUILD_TYPE=Release
+          -DBUILD_TESTING=OFF
+          -DBUILD_SHARED_LIBS=ON
+          -DVTK_WRAP_PYTHON=ON
+          -DVTK_WRAP_JAVA=OFF
+          -DVTK_USE_TK:BOOL=ON
+          -DVTK_USE_SYSTEM_EXPAT=ON
+		  -DVTK_USE_SYSTEM_FREETYPE=ON
+		  -DVTK_USE_SYSTEM_GL2PS=ON
+		  -DVTK_USE_SYSTEM_HDF5=ON
+		  -DVTK_USE_SYSTEM_JPEG=ON
+		  -DVTK_USE_SYSTEM_LIBXML2=ON
+	      -DVTK_USE_SYSTEM_OGGTHEORA=ON
+	      -DVTK_USE_SYSTEM_PNG=ON
+	      -DVTK_USE_SYSTEM_TIFF=ON
+	      -DVTK_USE_SYSTEM_ZLIB=ON
+	      -DVTK_Group_Imaging=ON
+		  -DVTK_Group_MPI=ON
+		  -DVTK_Group_Qt=ON
+		  -DVTK_Group_Tk=ON
+		  -DVTK_Group_Views=ON
+		  -DVTK_BUILD_ALL_MODULES=OFF
+		  -DMPI_CXX_INCLUDE_PATH="/usr/include/mpi"
+		  -DVTK_MAKE_INSTANTIATORS=ON
+		  -DVTK_RENDERING_BACKEND:STRING=OpenGL
+		  "
+
+#-DVTK_RENDERING_BACKEND:STRING=OpenGL2
+#-DVTK_QT_VERSION=4
 
 if [ -d "${VTK_DATA_ROOT}" ]; then
     CONFOPTS="${CONFOPTS} -D VTK_DATA_ROOT:PATH=${VTK_DATA_ROOT}"
@@ -24,16 +46,8 @@ if [ ! -z "${PYTHON_INCLUDE_DIR}" ]; then
     CONFOPTS="${CONFOPTS} -D PYTHON_INCLUDE_DIR:PATH=${PYTHON_INCLUDE_DIR}"
 fi
 
-if [ ! -z "${PYTHON_LIBRARY}" ]; then
-    CONFOPTS="${CONFOPTS} -D PYTHON_LIBRARY:PATH=${PYTHON_LIBRARY}"
-fi
-
-
-package_specific_setup () {
-    chmod 600 Utilities/vtktiff/tif_fax3sm.c
-}
-
 package_specific_register () {
-    export LD_LIBRARY_PATH=${INSTALL_PATH}/lib/vtk-5.8:${LD_LIBRARY_PATH}
-    export DYLD_LIBRARY_PATH=${INSTALL_PATH}/lib/vtk-5.8:${DYLD_LIBRARY_PATH}
+	export VTK_DIR=${INSTALL_PATH}
+    #export LD_LIBRARY_PATH=${INSTALL_PATH}/lib/vtk-6.2:${LD_LIBRARY_PATH}
+    #export DYLD_LIBRARY_PATH=${INSTALL_PATH}/lib/vtk-6.2:${DYLD_LIBRARY_PATH}
 }

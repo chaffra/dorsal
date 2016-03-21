@@ -5,7 +5,7 @@ BUILDCHAIN=custom
 
 default PETSC_ARCH=arch-linux2-cxx-debug
 
-default PETSC_EXTRA_PACKAGES="pastix superlu superlu_mt superlu_dist"
+#default PETSC_EXTRA_PACKAGES="pastix superlu superlu_dist"
 
 CONFOPTS="COPTFLAGS=-O2
           --with-debugging=1 --with-shared-libraries=1 --with-pthreadclasses=1  --with-openmp=1"
@@ -36,5 +36,5 @@ package_specific_build () {
 
 package_specific_register () {
     export PETSC_DIR=${INSTALL_PATH}
-    unset PETSC_ARCH
+    #unset PETSC_ARCH
 }
