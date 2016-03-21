@@ -5,10 +5,11 @@ BUILDCHAIN=custom
 
 default PETSC_ARCH=arch-linux2-cxx-debug
 
-default PETSC_EXTRA_PACKAGES="pastix superlu superlu_mt superlu_dist"
+#default PETSC_EXTRA_PACKAGES="superlu superlu_dist"
 
 CONFOPTS="COPTFLAGS=-O2
-          --with-debugging=1 --with-shared-libraries=1 --with-pthreadclasses=1  --with-openmp=1"
+          --with-debugging=1 --with-shared-libraries=1 --with-pthreadclasses=0  --with-openmp=0"
+
 #	  --with-precision=__float128  --download-f2cblaslapack=1 --with-clanguage=cxx --with-c-support=1"
 # --with-pthreadclasses=0  --with-openmp=0
 

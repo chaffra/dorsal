@@ -22,8 +22,7 @@ CONFOPTS="-DCMAKE_BUILD_TYPE=Release
 	      -DVTK_USE_SYSTEM_ZLIB=ON
 	      -DVTK_Group_Imaging=ON
 		  -DVTK_Group_MPI=ON
-		  -DVTK_Group_Qt=ON
-		  -DVTK_QT_VERSION=4
+		  -DVTK_Group_Qt=ON	
 		  -DVTK_Group_Tk=ON
 		  -DVTK_Group_Views=ON
 		  -DVTK_BUILD_ALL_MODULES=OFF
