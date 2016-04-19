@@ -1,13 +1,13 @@
-NAME=vtk.git
+ NAME=vtk.git
 SOURCE="https://gitlab.kitware.com/chaffra/vtk.git "
 PACKING=git
 BUILDCHAIN=cmake
 EXTRACTSTO=vtk.git
 
 CONFOPTS="-DCMAKE_BUILD_TYPE=Release
-          -D BUILD_TESTING=OFF
-          -D BUILD_SHARED_LIBS=ON
-          -D VTK_WRAP_PYTHON=ON
+          -DBUILD_TESTING=OFF
+          -DBUILD_SHARED_LIBS=ON
+          -DVTK_WRAP_PYTHON=ON
           -DVTK_WRAP_JAVA=OFF
           -DVTK_USE_TK:BOOL=ON
           -DVTK_USE_SYSTEM_EXPAT=ON
@@ -22,11 +22,14 @@ CONFOPTS="-DCMAKE_BUILD_TYPE=Release
 	      -DVTK_USE_SYSTEM_ZLIB=ON
 	      -DVTK_Group_Imaging=ON
 		  -DVTK_Group_MPI=ON
-		  -DVTK_Group_Qt=ON
-		  -DVTK_QT_VERSION=4
+		  -DVTK_Group_Qt=ON	
 		  -DVTK_Group_Tk=ON
 		  -DVTK_Group_Views=ON
 		  -DVTK_BUILD_ALL_MODULES=OFF
+		  -DVTK_USE_SYSTEM_HDF5=ON
+		  -DVTK_USE_SYSTEM_MPI=ON
+		  -DHDF5_C_COMPILER_EXECUTABLE:FILEPATH=/usr/bin/h5pcc
+		  -DVTK_MAKE_INSTANTIATORS=ON
 		  -DMPI_CXX_INCLUDE_PATH="/usr/include/mpi"
 		  -DVTK_MAKE_INSTANTIATORS=ON
 		  -DVTK_RENDERING_BACKEND:STRING=OpenGL

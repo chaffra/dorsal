@@ -8,7 +8,8 @@ default PETSC_ARCH=arch-linux2-cxx-debug
 #default PETSC_EXTRA_PACKAGES="pastix superlu superlu_dist"
 
 CONFOPTS="COPTFLAGS=-O2
-          --with-debugging=1 --with-shared-libraries=1 --with-pthreadclasses=1  --with-openmp=1"
+          --with-debugging=1 --with-shared-libraries=1 --with-pthreadclasses=0  --with-openmp=0"
+
 #	  --with-precision=__float128  --download-f2cblaslapack=1 --with-clanguage=cxx --with-c-support=1"
 # --with-pthreadclasses=0  --with-openmp=0
 
@@ -36,5 +37,6 @@ package_specific_build () {
 
 package_specific_register () {
     export PETSC_DIR=${INSTALL_PATH}
+    export SCOTCH_DIR=${INSTALL_PATH}
     #unset PETSC_ARCH
 }

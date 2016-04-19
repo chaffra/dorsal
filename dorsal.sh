@@ -279,10 +279,10 @@ package_build() {
         echo rm -f CMakeCache.txt >>dorsal_configure
 		if [ "$MSYSTEM" == "MSYS" ];
 		then
-			echo cmake -G"Unix\ Makefiles" ${CONFOPTS} -D CMAKE_INSTALL_PREFIX:PATH=${INSTALL_PATH} ../ >>dorsal_configure
+			echo cmake -G"MSYS\ Makefiles" ${CONFOPTS} -D CMAKE_INSTALL_PREFIX:PATH=${INSTALL_PATH} ../ >>dorsal_configure
 		elif [ "$MSYSTEM" = "MINGW64" ]
 		then
-		    echo cmake -G"MinGW\ Makefiles" ${CONFOPTS} -D CMAKE_INSTALL_PREFIX:PATH=${INSTALL_PATH} ../ >>dorsal_configure
+		    echo cmake -G"MSYS\ Makefiles" ${CONFOPTS} -D CMAKE_INSTALL_PREFIX:PATH=${INSTALL_PATH} ../ >>dorsal_configure
 		else
 		    echo cmake ${CONFOPTS} -D CMAKE_INSTALL_PREFIX:PATH=${INSTALL_PATH} ../ >>dorsal_configure
 		fi

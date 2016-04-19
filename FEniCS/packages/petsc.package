@@ -32,8 +32,10 @@ fi
 
 package_specific_build () {
     ./configure --prefix=${INSTALL_PATH} ${CONFOPTS}
-    make PETSC_DIR=${PWD} PETSC_ARCH=${PETSC_ARCH} all
-    make PETSC_DIR=${PWD} PETSC_ARCH=${PETSC_ARCH} install
+    #make PETSC_DIR=${PWD} PETSC_ARCH=${PETSC_ARCH} all
+    #make PETSC_DIR=${PWD} PETSC_ARCH=${PETSC_ARCH} install
+    make all
+    make install
 }
 
 package_specific_register () {
