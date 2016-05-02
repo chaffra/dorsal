@@ -1,4 +1,4 @@
 NAME=mshr
-SOURCE=https://bitbucket.org/benjamik/
+SOURCE=https://chaffra@bitbucket.org/fenics-project/
 PACKING=git
 BUILDCHAIN=cmake
